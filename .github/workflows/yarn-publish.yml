@@ -21,7 +21,8 @@ jobs:
             - run: yarn install
             #- run: yarn test
 
-    publish-gpr:
+    publish:
+        name: Publish package to npmjs
         needs: build
         runs-on: ubuntu-latest
         steps:
@@ -29,20 +30,12 @@ jobs:
             - uses: actions/setup-node@v3
               with:
                   node-version: 18
-                  registry-url: https://npm.pkg.github.com/
+                  registry-url: 'https://registry.npmjs.org'
             - run: git config --global user.email "ross@bsoltec.com"
             - run: git config --global user.name "Ross Chiu"
             - run: yarn install
             - run: yarn build
             - run: yarn version --patch
-            - run: git push --tags && npm publish . && git push && echo \"Successfully released version $npm_package_version!\"
+            - run: yarn publish . && git push --tags && git push && echo \"Successfully released version $npm_package_version!\"
               env:
-                  NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-
-    delete-old:
-        needs: publish-gpr
-        runs-on: ubuntu-latest
-        steps:
-            - uses: actions/delete-package-versions@v3
-              with:
-                  package-name: 'express-advanced-query'
+                  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
