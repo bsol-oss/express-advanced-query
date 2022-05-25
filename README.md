@@ -2,29 +2,6 @@
 
 This package helps to automate pagination, sorting and advanced search.
 
-## Set up
-
--   Create a `.env` file with the following content
-
-```
-AUTH_SQLHOST=
-AUTH_SQLUSER=
-AUTH_SQLPASSWORD=
-AUTH_SQLDB=
-```
-
-## How to add new knexjs migration & seed data
-
-### Migration:
-
-`npx knex migrate:make <your-migration-file-name>`
-
-### Seed:
-
-`npx knex seed:make <your-seed-file-name>`
-
-Note: seed file name should be prefixed by number (for ex: `01_user`) so that knex will process them in an expected order
-
 ## Install
 
 Run
@@ -36,3 +13,24 @@ N.B.:
 -   Make sure to add all the peer-dependency packages.
 -   Fork the package for your changes.
 -   Update the `express-advanced-query` package to the latest version.
+
+## How to use
+
+ex: A table name 'user' with field: id, name, email
+
+API call: .../api/user?pagination={"page":2,"rows":5}&where={"name":"abc"}
+
+```
+import { expressAdvanceQuery } from @bsol-oss/express-advanced-query
+
+const result = await expressAdvanceQuery(
+                hostValue,
+                userValue,
+                passwordValue,
+                dbName,
+                tableName,
+                req.query
+            )
+```
+
+It will first fetch 6-10 records from that get name=abc records.
