@@ -4,7 +4,6 @@ import resolve from '@rollup/plugin-node-resolve'
 import external from 'rollup-plugin-peer-deps-external'
 import { terser } from 'rollup-plugin-terser'
 import json from '@rollup/plugin-json'
-import copy from 'rollup-plugin-copy'
 
 import packageJSON from './package.json'
 const input = './index.js'
@@ -31,13 +30,6 @@ export default [
             json(),
             resolve(),
             commonjs(),
-            // for copying folders to dist
-            copy({
-                targets: [
-                    { src: 'migrations', dest: 'dist' },
-                    { src: 'seeds', dest: 'dist' }
-                ]
-            }),
             terser()
         ]
     }
