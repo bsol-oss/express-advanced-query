@@ -29,8 +29,17 @@ export const expressAdvanceQuery = async (
     }
 
     let result = await queryObj
-    if (query.sortField)
-        result = _.orderBy(result, [query.sortField], [query.sort])
+    if (query.sorting) {
+        const sortingObj = JSON.parse(query.sorting)
+        const sortField = sortingObj.field ? sortingObj.field.split(',') : null
+        if (sortField)
+            result = _.orderBy(
+                result,
+                sortField,
+                sortingObj.sort ? sortingObj.sort.split(',') : 'asc'
+            )
+    }
+
     if (query.where) result = _.filter(result, JSON.parse(query.where))
     return result
 }
