@@ -40,6 +40,18 @@ export const expressAdvanceQuery = async (
             )
     }
 
-    if (query.where) result = _.filter(result, JSON.parse(query.where))
+    if (query.where) {
+        const sortingObj = JSON.parse(query.where)
+        for (const obj in sortingObj) {
+            result = result.filter(
+                (res) =>
+                    res[obj] &&
+                    res[obj]
+                        .toString()
+                        .toLowerCase()
+                        .includes(sortingObj[obj].toString().toLowerCase())
+            )
+        }
+    }
     return result
 }
