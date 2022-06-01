@@ -23,9 +23,7 @@ export const expressAdvanceQuery = async (
     if (query.pagination) {
         const paginationObj = JSON.parse(query.pagination)
         const rows = paginationObj.rows || 100
-        queryObj = queryObj
-            .limit(rows)
-            .offset(rows * ((paginationObj.page || 1) - 1))
+        queryObj = queryObj.limit(rows).offset(paginationObj.offset)
     }
 
     if (query.sorting) {
@@ -58,6 +56,23 @@ export const expressAdvanceQuery = async (
             return result
         })
     }
+
+    if (query.searching) {
+        queryObj = queryObj.then((resp) => {
+            let result = resp.filter((x) =>
+                Object.values(x)
+                    .slice(1)
+                    .toString()
+                    .toLowerCase()
+                    .includes(query.searching.toLowerCase())
+            )
+            return result
+        })
+    }
     let result = await queryObj
-    return result
+    let count = await DB(table).count('id')
+    return {
+        count: count[0]['count(`id`)'],
+        results: result
+    }
 }
