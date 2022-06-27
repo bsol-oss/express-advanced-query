@@ -1,7 +1,7 @@
 import _ from 'lodash'
 import knex from 'knex'
 
-export const expressAdvanceQuery = async (
+const expressAdvanceQuery = async (
     host,
     user,
     password,
@@ -76,3 +76,5 @@ export const expressAdvanceQuery = async (
         results: result
     }
 }
+
+export default expressAdvanceQuery

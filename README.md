@@ -21,7 +21,7 @@ ex: A table name 'user' with field: id, name, email
 1. API call: .../api/user?pagination={"offset":2,"rows":5}&where={"name":"abc"}
 
 ```
-import { expressAdvanceQuery } from @bsol-oss/express-advanced-query
+import expressAdvanceQuery from @bsol-oss/express-advanced-query
 
 const result = await expressAdvanceQuery(
                 hostValue,
