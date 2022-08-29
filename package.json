@@ -1,6 +1,6 @@
 {
     "name": "@bsol-oss/express-advanced-query",
-    "version": "0.0.9",
+    "version": "0.0.10",
     "description": "This helps to automate pagination, sorting and advanced search",
     "main": "dist/index.js",
     "module": "dist/index.es.js",
