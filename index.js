@@ -20,11 +20,6 @@ const expressAdvanceQuery = async (
     })
 
     let queryObj = DB.from(table)
-    if (query.pagination) {
-        const paginationObj = JSON.parse(query.pagination)
-        const rows = paginationObj.rows || 100
-        queryObj = queryObj.limit(rows).offset(paginationObj.offset)
-    }
 
     if (query.sorting) {
         const sortingObj = JSON.parse(query.sorting)
@@ -69,10 +64,20 @@ const expressAdvanceQuery = async (
             return result
         })
     }
+    let result1 = await queryObj
+    const filterCount = result1.length
+
+    if (query.pagination) {
+        const paginationObj = JSON.parse(query.pagination)
+        const rows = paginationObj.rows || 100
+        queryObj = queryObj.limit(rows).offset(paginationObj.offset)
+    }
+
     let result = await queryObj
     let count = await DB(table).count('id')
     return {
         count: count[0]['count(`id`)'],
+        filterCount: filterCount,
         results: result
     }
 }
